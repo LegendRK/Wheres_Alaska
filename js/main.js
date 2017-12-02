@@ -70,15 +70,24 @@ function setup()
     explosionTextures = loadSpriteSheet();
     states = loadSpriteSheetStates();
 
+    // Now our 'startScene' is visible
+    // Clicking the button calls startGame()
+    console.log(states);
+    
+    for(let i = 0; i < states.length; i++) {
+        let currState = new State(i, states[i]);
+        currState.x = Math.random() * (sceneWidth - 50) + 25;
+        currState.y = Math.random() * (sceneHeight - 400) + 25;
+        //console.log(currState);
+        gameScene.addChild(currState);
+    }
+    
     // #8 - Start update loop
     app.ticker.add(gameLoop);
 
     // #9 - Start listening for click events on the canvas
     app.view.onclick = fireBullet;
 
-    // Now our 'startScene' is visible
-    // Clicking the button calls startGame()
-    console.log(states);
 }
 
 function createLabelsAndButtons()
@@ -216,8 +225,8 @@ function startGame()
     life = 100;
     increaseScoreBy(0);
     decreaseLifeBy(0);
-    ship.x = 300;
-    ship.y = 550;
+    //ship.x = 300;
+    //ship.y = 550;
     loadLevel();
 }
 
@@ -252,9 +261,9 @@ function fireBullet(e)
 
     if(score >= 5)
     {
-        let b1 = new Bullet(0xFFFFFF, ship.x + 10, ship.y);
-        let b2 = new Bullet(0xFFFFFF, ship.x, ship.y);
-        let b3 = new Bullet(0xFFFFFF, ship.x - 10, ship.y);
+//        let b1 = new Bullet(0xFFFFFF, ship.x + 10, ship.y);
+//        let b2 = new Bullet(0xFFFFFF, ship.x, ship.y);
+//        let b3 = new Bullet(0xFFFFFF, ship.x - 10, ship.y);
 
         bullets.push(b1);
         bullets.push(b2);
@@ -266,9 +275,9 @@ function fireBullet(e)
     }
     else
     {
-        let b = new Bullet(0xFFFFFF, ship.x, ship.y);
-        bullets.push(b);
-        gameScene.addChild(b);
+//        let b = new Bullet(0xFFFFFF, ship.x, ship.y);
+//        bullets.push(b);
+//        gameScene.addChild(b);
     }
     shootSound.play();
 }
@@ -304,6 +313,8 @@ function loadSpriteSheetStates()
     let width = 64;
     let height = 64;
     let statesPerRow = 9;
+    
+    // Skip the first images since img 1 is the USA and img 2 is the blank
     let startState = 2;
     let numRows = 6;
     //let numFrames = 50;
@@ -355,14 +366,14 @@ function gameLoop(){
     let amt = 6 * dt;   // at 60 fps would move about 10% of distance per update
 
     // lerp (linear interpolate) the x & y with lerp
-    let newX = lerp(ship.x, mousePosition.x, amt);
-    let newY = lerp(ship.y, mousePosition.y, amt);
+//    let newX = lerp(ship.x, mousePosition.x, amt);
+//    let newY = lerp(ship.y, mousePosition.y, amt);
 
     // keep the ship on the screen with clamp()
-    let w2 = ship.width/2;
-    let h2 = ship.height/2;
-    ship.x = clamp(newX, 0 + w2, sceneWidth - w2);
-    ship.y = clamp(newY, 0 + h2, sceneWidth - h2);
+//    let w2 = ship.width/2;
+//    let h2 = ship.height/2;
+//    ship.x = clamp(newX, 0 + w2, sceneWidth - w2);
+//    ship.y = clamp(newY, 0 + h2, sceneWidth - h2);
 
 	// #3 - Move Circles
 	for (let c of circles)
@@ -405,13 +416,13 @@ function gameLoop(){
             }
         }
         // #5B - circles & ship
-        if(c.isAlive && rectsIntersect(c, ship))
-        {
-            hitSound.play();
-            gameScene.removeChild(c);
-            c.isAlive = false;
-            decreaseLifeBy(20);
-        }
+//        if(c.isAlive && rectsIntersect(c, ship))
+//        {
+//            hitSound.play();
+//            gameScene.removeChild(c);
+//            c.isAlive = false;
+//            decreaseLifeBy(20);
+//        }
     }
 
 	// #6 - Now do some clean up
