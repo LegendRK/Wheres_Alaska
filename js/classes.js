@@ -7,9 +7,25 @@ class State extends PIXI.Sprite
         
         // set the anchor
         this.anchor.set(0.5, 0.5);
+        this.isMouseTarget = false;
         
         // set the scale
         this.scale.set = Math.random() * 2;
+        this.interactive = true;
+        this.on("pointerdown", function(e) {
+            this.isMouseTarget = true;
+        });
+        
+        this.on("pointermove", function(e) {
+            if(this.isMouseTarget) {
+                let mousePosition = app.renderer.plugins.interaction.mouse.global;
+                this.position = mousePosition;
+            }
+        });
+        
+        this.on("pointerup", function(e) {
+            this.isMouseTarget = false;
+        });
         
         // set the x and y
         this.x = x;

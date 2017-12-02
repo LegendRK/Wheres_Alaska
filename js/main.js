@@ -360,8 +360,7 @@ function gameLoop(){
 
 
 	// #2 - Move Ship
-    let mousePosition = app.renderer.plugins.interaction.mouse.global;
-    //ship.position = mousePosition;
+
 
     let amt = 6 * dt;   // at 60 fps would move about 10% of distance per update
 
