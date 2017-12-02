@@ -1,3 +1,25 @@
+class State extends PIXI.Sprite
+{
+    constructor(id, texture, x = 0, y = 0)
+    {
+        // load the texture using super
+        super(texture);
+        
+        // set the anchor
+        this.anchor.set(0.5, 0.5);
+        
+        // set the scale
+        this.scale = Math.random() * 2;
+        
+        // set the x and y
+        this.x = x;
+        this.y = y;
+        
+        // set the id so we can check for the state later
+        this.id = id;
+    }
+}
+
 class Ship extends PIXI.Sprite
 {
     constructor(x = 0, y = 0)
