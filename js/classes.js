@@ -9,7 +9,7 @@ class State extends PIXI.Sprite
         this.anchor.set(0.5, 0.5);
         
         // set the scale
-        this.scale = Math.random() * 2;
+        this.scale.set = Math.random() * 2;
         
         // set the x and y
         this.x = x;
@@ -17,6 +17,34 @@ class State extends PIXI.Sprite
         
         // set the id so we can check for the state later
         this.id = id;
+    }
+}
+
+class Timer extends PIXI.Graphics
+{
+    constructor(width, time = 60, height = 5, color = 0xFFFFFF, x = 0, y = height)
+    {
+        super();
+        this.beginFill(color);
+        this.drawRect(x, y, width, height);
+        this.endFill();
+        this.x = x;
+        this.y = y;
+        
+        this.originalWidth = width;
+        this.totalTime = time;
+        this.currentTime = this.totalTime;
+    }
+    
+    countdown(dt = 1/60)
+    {
+        this.currentTime -= dt;
+        update();
+    }
+    
+    update()
+    {
+        this.width = (this.currentTime / this.totalTime) * this.originalWidth; 
     }
 }
 
