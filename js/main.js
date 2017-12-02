@@ -7,7 +7,7 @@ const sceneWidth = app.view.width;
 const sceneHeight = app.view.height;
 
 // pre-load the images
-PIXI.loader.add(["images/Spaceship.png", "images/explosions.png"]).on("progress", e=>{console.log('progress=${e.progress}')}).load(setup);
+PIXI.loader.add("images/us_states.png").on("progress", e=>{console.log('progress=${e.progress}')}).load(setup);
 
 // aliases
 let stage;
@@ -245,10 +245,6 @@ function createCircles(numCircles)
 
 function fireBullet(e)
 {
-    // let rect = app.view.getBoundingClientRect();
-    // let mouseX = e.clientX - rect.x;
-    // let mouseY = e.clientY - rect.y;
-    // console.lof('${mouseX}, ${mouseY}');
     if(paused) return;
     
     if(score >= 5)
