@@ -83,10 +83,9 @@ function setup()
     }
     
     // #8 - Start update loop
-    app.ticker.add(gameLoop);
+    //app.ticker.add(gameLoop);
 
     // #9 - Start listening for click events on the canvas
-    app.view.onclick = fireBullet;
 
 }
 
@@ -255,33 +254,6 @@ function createCircles(numCircles)
     }
 }
 
-function fireBullet(e)
-{
-    if(paused) return;
-
-    if(score >= 5)
-    {
-//        let b1 = new Bullet(0xFFFFFF, ship.x + 10, ship.y);
-//        let b2 = new Bullet(0xFFFFFF, ship.x, ship.y);
-//        let b3 = new Bullet(0xFFFFFF, ship.x - 10, ship.y);
-
-        bullets.push(b1);
-        bullets.push(b2);
-        bullets.push(b3);
-
-        gameScene.addChild(b1);
-        gameScene.addChild(b2);
-        gameScene.addChild(b3);
-    }
-    else
-    {
-//        let b = new Bullet(0xFFFFFF, ship.x, ship.y);
-//        bullets.push(b);
-//        gameScene.addChild(b);
-    }
-    shootSound.play();
-}
-
 function loadLevel()
 {
     createCircles(levelNum * 5);
@@ -350,102 +322,4 @@ function end()
     gameScene.visible = false;
 }
 
-function gameLoop(){
-
-    if (paused) return;
-
-	// #1 - Calculate "delta time"
-    let dt = 1/app.ticker.FPS;
-    if (dt > 1/12) dt=1/12;
-
-
-	// #2 - Move Ship
-
-
-    let amt = 6 * dt;   // at 60 fps would move about 10% of distance per update
-
-    // lerp (linear interpolate) the x & y with lerp
-//    let newX = lerp(ship.x, mousePosition.x, amt);
-//    let newY = lerp(ship.y, mousePosition.y, amt);
-
-    // keep the ship on the screen with clamp()
-//    let w2 = ship.width/2;
-//    let h2 = ship.height/2;
-//    ship.x = clamp(newX, 0 + w2, sceneWidth - w2);
-//    ship.y = clamp(newY, 0 + h2, sceneWidth - h2);
-
-	// #3 - Move Circles
-	for (let c of circles)
-    {
-        c.move(dt);
-        if(c.x <= c.radius || c.x >= sceneWidth - c.radius)
-        {
-            c.reflectX();
-            c.move(dt);
-        }
-
-        if(c.y <= c.radius || c.y >= sceneHeight - c.radius)
-        {
-            c.reflectY();
-            c.move(dt);
-        }
-    }
-
-	// #4 - Move Bullets
-    for(let b of bullets)
-    {
-        b.move(dt);
-    }
-
-	// #5 - Check for Collisions
-	for (let c of circles)
-    {
-        for (let b of bullets)
-        {
-            // #5A - circles & bullets
-            if(rectsIntersect(c, b))
-            {
-                fireballSound.play();
-                createExplosion(c.x, c.y, 64, 64);
-                gameScene.removeChild(c);
-                c.isAlive = false;
-                gameScene.removeChild(b);
-                b.isAlive = false;
-                increaseScoreBy(1);
-            }
-        }
-        // #5B - circles & ship
-//        if(c.isAlive && rectsIntersect(c, ship))
-//        {
-//            hitSound.play();
-//            gameScene.removeChild(c);
-//            c.isAlive = false;
-//            decreaseLifeBy(20);
-//        }
-    }
-
-	// #6 - Now do some clean up
-
-    // get rid of dead bullets
-	bullets = bullets.filter(b=>b.isAlive);
-
-    // get rid of dead circles
-    circles = circles.filter(c=>c.isAlive);
-
-    // get rid of explosions
-    explosions = explosions.filter(e=>e.playing);
-
-	// #7 - Is game over?
-	if(life <= 0)
-    {
-        end();
-        return; // return here so we skip #8 below
-    }
-
-	// #8 - Load next level
-    if (circles.length == 0)
-    {
-        levelNum++;
-        loadLevel();
-    }
-}
+function gameLoop(){}
