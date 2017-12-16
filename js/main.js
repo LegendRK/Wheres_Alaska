@@ -25,6 +25,8 @@ let states = [];
 let alaska;
 let currStates = [];
 let explosionTextures;
+let highScore = 0;
+let scoreKey = "rgkdsgscore";
 let score = 0;
 let life = 100;
 let levelNum = 1;
@@ -34,6 +36,10 @@ function setup()
 {
     stage = app.stage;
 
+    // #0 - Get High Score from local storage
+    highScore = localStorage.getItem(scoreKey);
+    console.log(highScore);
+    
     // #1 - Create the 'start' scene
     startScene = new PIXI.Container();
     stage.addChild(startScene);
@@ -110,25 +116,11 @@ function createLabelsAndButtons()
     startLabel1.y = 120;
     startScene.addChild(startLabel1);
 
-    // 1B - make the middle start label
-    let startLabel2 = new PIXI.Text("R U worthy..?");
-    startLabel2.style = new PIXI.TextStyle({
-        fill: 0xFFFFFF,
-        fontSize: 32,
-        fontFamily: 'Futura',
-        fontStyle: 'italic',
-        stroke: 0xFF0000,
-        strokeThickness: 6
-    });
-    startLabel2.x = 185;
-    startLabel2.y = 300;
-    startScene.addChild(startLabel2);
-
-    // 1C - make the start game button
-    let startButton = new PIXI.Text("Enter, ... if you dare!");
+    // 1B - make the start game button
+    let startButton = new PIXI.Text("Play");
     startButton.style = buttonStyle;
-    startButton.x = 80;
-    startButton.y = sceneHeight - 100;
+    startButton.x = sceneWidth/2 - 60;
+    startButton.y = sceneHeight/2;
     startButton.interactive = true;
     startButton.buttonMode = true;
     startButton.on("pointerup", startGame);
@@ -136,6 +128,40 @@ function createLabelsAndButtons()
     startButton.on('pointerout', e=>e.currentTarget.alpha = 1.0);
     startScene.addChild(startButton);
 
+    // 1C - make the help button
+    let helpButton = new PIXI.Text("Help");
+    helpButton.style = buttonStyle;
+    helpButton.x = sceneWidth/2 - 60;
+    helpButton.y = sceneHeight/2 + 80;
+    helpButton.interactive = true;
+    helpButton.buttonMode = true;
+    helpButton.on("pointerup", startGame);
+    helpButton.on('pointerover', e=>e.target.alpha = 0.7);
+    helpButton.on('pointerout', e=>e.currentTarget.alpha = 1.0);
+    startScene.addChild(helpButton);
+    
+    // 1D - make the high score
+    let startLabel2;
+    if(highScore == null)
+    {
+        startLabel2 = new PIXI.Text("High Score: " + 0);
+    }
+    else
+    {
+        startLabel2 = new PIXI.Text("High Score: " + highScore);
+    }
+    startLabel2.style = new PIXI.TextStyle({
+        fill: 0xFFFFFF,
+        fontSize: 21,
+        fontFamily: 'DK Honeyguide',
+        stroke: 0xFF0000,
+        strokeThickness: 3
+    });
+    startLabel2.x = sceneWidth/2 - 75;
+    startLabel2.y = sceneHeight - 30;
+    startScene.addChild(startLabel2);
+    
+    
     // 2 - set up 'gameScene'
     let textStyle = new PIXI.TextStyle({
         fill: 0xFFFFFF,
