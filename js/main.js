@@ -335,24 +335,6 @@ function randomlyPlaceState(currState) {
     gameScene.addChild(currState);
 }
 
-function end()
-{
-//    paused = true;
-//
-//    // clear out level
-//    circles.forEach(c=>gameScene.removeChild(c));
-//    circles = [];
-//
-//    bullets.forEach(b=>gameScene.removeChild(b));
-//    bullets = [];
-//
-//    explosions.forEach(e=>gameScene.removeChild(e));
-//    explosions = [];
-//
-//    gameOverScoreLabel.text = 'Your Final Score: ' + score;
-//
-//    gameOverScene.visible = true;
-//    gameScene.visible = false;
-}
+function end(){}
 
 function gameLoop(){}
