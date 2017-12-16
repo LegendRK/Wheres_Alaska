@@ -54,6 +54,7 @@ function setup()
     // gameScene.addChild(ship);
 
     // #6 - Load Sounds
+    /*
     shootSound = new Howl({
         src: ['sounds/shoot.wav']
     });
@@ -65,7 +66,8 @@ function setup()
     fireballSound = new Howl({
         src: ['sounds/fireball.mp3']
     });
-
+    */
+    
     // #7 - Load sprite sheet
     explosionTextures = loadSpriteSheet();
     states = loadSpriteSheetStates();
@@ -94,20 +96,20 @@ function createLabelsAndButtons()
     let buttonStyle = new PIXI.TextStyle({
         fill: 0xFF0000,
         fontSize: 48,
-        fontFamily: "Futura"
+        fontFamily: "DK Honeyguide"
     });
 
     // 1 - set up 'startScene'
     // 1A - make the top start label
-    let startLabel1 = new PIXI.Text("Circle Blast!");
+    let startLabel1 = new PIXI.Text("Where's Alaska?");
     startLabel1.style = new PIXI.TextStyle({
         fill: 0xFFFFFF,
-        fontSize: 96,
-        fontFamily: 'Futura',
+        fontSize: 72,
+        fontFamily: 'DK Honeyguide',
         stroke: 0xFF0000,
         strokeThickness: 6
     });
-    startLabel1.x = 50;
+    startLabel1.x = 60;
     startLabel1.y = 120;
     startScene.addChild(startLabel1);
 
