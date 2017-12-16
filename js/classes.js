@@ -8,13 +8,28 @@ class State extends PIXI.Sprite
         // set the anchor
         this.anchor.set(0.5, 0.5);
         this.isMouseTarget = false;
+        this.clicks = 0;
         
         // set the scale
         this.scale.set = Math.random() * 2;
         this.interactive = true;
         this.on("pointerdown", function(e) {
-            this.isMouseTarget = true;
+            
+            let obj = this;
+            this.clicks++;
+            if (this.clicks == 1) {
+                obj.isMouseTarget = true; 
+                setTimeout(function() { 
+                    obj.clicks = 0; 
+                }, 400);
+            } else if (this.clicks == 2){
+                if(this.dblclick) {
+                    this.dblclick();
+                }
+                obj.clicks = 0;
+            }
         });
+        
         
         this.on("pointermove", function(e) {
             if(this.isMouseTarget) {

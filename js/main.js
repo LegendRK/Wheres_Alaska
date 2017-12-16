@@ -23,6 +23,7 @@ let aliens = [];
 let explosions = [];
 let states = [];
 let alaska;
+let alaskaTexture;
 let currStates = [];
 let explosionTextures;
 let highScore = 0;
@@ -249,8 +250,6 @@ function startGame()
     life = 100;
     increaseScoreBy(0);
     decreaseLifeBy(0);
-    //ship.x = 300;
-    //ship.y = 550;
     loadLevel();
 }
 
@@ -318,7 +317,7 @@ function loadSpriteSheetStates()
     //let numFrames = 50;
     let states = [];
     
-    alaska = new PIXI.Texture(spriteSheet, new PIXI.Rectangle(startState*width, 0, width, height));
+    alaskaTexture = new PIXI.Texture(spriteSheet, new PIXI.Rectangle(startState*width, 0, width, height));
     startState++;
     
     for(let i = 0; i < numRows; i++)
@@ -332,6 +331,12 @@ function loadSpriteSheetStates()
     return states;
 }
 
+function startNextLevel() {
+    endLevel();
+    levelNum++;
+    newLevel(levelNum);
+}
+
 function endLevel()
 {
     paused = true;
@@ -343,8 +348,9 @@ function endLevel()
 }
 
 function newLevel(levelNum) {
-    let alaskaStateObj = new State(2, alaska);
-    randomlyPlaceState(alaskaStateObj);
+    alaska = new State(2, alaskaTexture);
+    alaska.dblclick = startNextLevel;
+    randomlyPlaceState(alaska);
     
     for(let i = 0; i < levelNum * 5; i++) {
         let randStateNum = Math.floor(Math.random()*states.length);
