@@ -41,7 +41,7 @@ class State extends PIXI.Sprite
         });
         
         this.on("pointerup", function(e) {
-            this.cursor = 'url(images/open hand.png) 8 8, pointer';
+            this.cursor = 'url(images/open_hand.png) 8 8, pointer';
             this.isMouseTarget = false;
         });
         
