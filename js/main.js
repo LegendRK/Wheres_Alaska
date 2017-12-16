@@ -22,6 +22,8 @@ let bullets = [];
 let aliens = [];
 let explosions = [];
 let states = [];
+let alaska;
+let currStates = [];
 let explosionTextures;
 let score = 0;
 let life = 100;
@@ -75,14 +77,9 @@ function setup()
     // Now our 'startScene' is visible
     // Clicking the button calls startGame()
     console.log(states);
-    
-    for(let i = 0; i < states.length; i++) {
-        let currState = new State(i, states[i]);
-        currState.x = Math.random() * (sceneWidth - 50) + 25;
-        currState.y = Math.random() * (sceneHeight - 400) + 25;
-        //console.log(currState);
-        gameScene.addChild(currState);
-    }
+
+    //First level
+    newLevel(levelNum);
     
     // #8 - Start update loop
     //app.ticker.add(gameLoop);
@@ -279,6 +276,7 @@ function loadSpriteSheet()
     return textures;
 }
 
+/// Init states array to state textures
 function loadSpriteSheetStates()
 {
     // 16 animation frames are 64x64
@@ -293,6 +291,10 @@ function loadSpriteSheetStates()
     let numRows = 6;
     //let numFrames = 50;
     let states = [];
+    
+    alaska = new PIXI.Texture(spriteSheet, new PIXI.Rectangle(startState*width, 0, width, height));
+    startState++;
+    
     for(let i = 0; i < numRows; i++)
     {
       for (let j = startState; j < statesPerRow; j++) {
@@ -304,24 +306,53 @@ function loadSpriteSheetStates()
     return states;
 }
 
-function end()
+function endLevel()
 {
     paused = true;
 
     // clear out level
-    circles.forEach(c=>gameScene.removeChild(c));
-    circles = [];
+    currStates.forEach(c=>gameScene.removeChild(c));
+    currStates = [];
 
-    bullets.forEach(b=>gameScene.removeChild(b));
-    bullets = [];
+}
 
-    explosions.forEach(e=>gameScene.removeChild(e));
-    explosions = [];
+function newLevel(levelNum) {
+    let alaskaStateObj = new State(2, alaska);
+    randomlyPlaceState(alaskaStateObj);
+    
+    for(let i = 0; i < levelNum * 5; i++) {
+        let randStateNum = Math.floor(Math.random()*states.length);
+        let currState = new State(randStateNum, states[randStateNum]);
+        randomlyPlaceState(currState);
+    }
+    
+}
 
-    gameOverScoreLabel.text = 'Your Final Score: ' + score;
+function randomlyPlaceState(currState) {
+    currStates.push(currState);
+    currState.x = Math.random() * (sceneWidth - 50) + 25;
+    currState.y = Math.random() * (sceneHeight - 400) + 25;
+    gameScene.addChild(currState);
+}
 
-    gameOverScene.visible = true;
-    gameScene.visible = false;
+function end()
+{
+//    paused = true;
+//
+//    // clear out level
+//    circles.forEach(c=>gameScene.removeChild(c));
+//    circles = [];
+//
+//    bullets.forEach(b=>gameScene.removeChild(b));
+//    bullets = [];
+//
+//    explosions.forEach(e=>gameScene.removeChild(e));
+//    explosions = [];
+//
+//    gameOverScoreLabel.text = 'Your Final Score: ' + score;
+//
+//    gameOverScene.visible = true;
+//    gameScene.visible = false;
 }
 
 function gameLoop(){}
