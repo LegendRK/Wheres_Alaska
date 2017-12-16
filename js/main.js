@@ -17,8 +17,6 @@ let startScene;
 let gameScene, ship, scoreLabel, lifeLabel, shootSound, hitSound, fireballSound, gameOverScoreLabel;
 let gameOverScene;
 
-let circles = [];
-let bullets = [];
 let aliens = [];
 let explosions = [];
 let states = [];
@@ -250,7 +248,7 @@ function startGame()
     life = 100;
     increaseScoreBy(0);
     decreaseLifeBy(0);
-    loadLevel();
+    newLevel(levelNum);
 }
 
 function increaseScoreBy(value)
@@ -264,24 +262,6 @@ function decreaseLifeBy(value)
     life -= value;
     life = parseInt(life);
     lifeLabel.text = 'Life      ' + life + '%';
-}
-
-function createCircles(numCircles)
-{
-    for(let i = 0; i < numCircles; i++)
-    {
-        let c = new Circle(10, 0xFFFF00);
-        c.x = Math.random() * (sceneWidth - 50) + 25;
-        c.y = Math.random() * (sceneHeight - 400) + 25;
-        circles.push(c);
-        gameScene.addChild(c);
-    }
-}
-
-function loadLevel()
-{
-    createCircles(levelNum * 5);
-    paused = false;
 }
 
 function loadSpriteSheet()
