@@ -15,10 +15,11 @@ class State extends PIXI.Sprite
         this.interactive = true;
         this.dblclick = dblclick;
         this.on("pointerdown", function(e) {
-            
+            this.cursor = 'url(images/grab.png) 8 8, pointer';
             let obj = this;
             this.clicks++;
             if (this.clicks == 1) {
+                
                 obj.isMouseTarget = true; 
                 setTimeout(function() { 
                     obj.clicks = 0; 
@@ -40,6 +41,7 @@ class State extends PIXI.Sprite
         });
         
         this.on("pointerup", function(e) {
+            this.cursor = 'url(images/open hand.png) 8 8, pointer';
             this.isMouseTarget = false;
         });
         
@@ -54,7 +56,7 @@ class State extends PIXI.Sprite
 
 class Timer extends PIXI.Graphics
 {
-    constructor(width, time = 60, height = 5, color = 0xFFFFFF, x = 0, y = height)
+    constructor(width, time = 10, height = 10, color = 0x000000, x = 0, y = 0)
     {
         super();
         this.beginFill(color);
@@ -62,20 +64,23 @@ class Timer extends PIXI.Graphics
         this.endFill();
         this.x = x;
         this.y = y;
-        
+        this.time = time;
+        this.width = width;
         this.originalWidth = width;
         this.totalTime = time;
         this.currentTime = this.totalTime;
+        
+        this.multiplier = 1;
     }
     
     countdown(dt = 1/60)
     {
-        this.currentTime -= dt;
-        update();
+        this.currentTime -= (((this.originalWidth / this.time) * (dt / 100)) * this.multiplier);
+        this.update();
     }
     
     update()
     {
-        this.width = (this.currentTime / this.totalTime) * this.originalWidth; 
+        this.width = Math.floor((this.currentTime / this.totalTime) * this.originalWidth);
     }
 }
