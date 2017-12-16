@@ -1,6 +1,6 @@
 class State extends PIXI.Sprite
 {
-    constructor(id, texture, x = 0, y = 0)
+    constructor(id, texture, dblclick, x = 0, y = 0)
     {
         // load the texture using super
         super(texture);
@@ -13,6 +13,7 @@ class State extends PIXI.Sprite
         // set the scale
         this.scale.set = Math.random() * 2;
         this.interactive = true;
+        this.dblclick = dblclick;
         this.on("pointerdown", function(e) {
             
             let obj = this;

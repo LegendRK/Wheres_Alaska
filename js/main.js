@@ -328,13 +328,12 @@ function endLevel()
 }
 
 function newLevel(levelNum) {
-    alaska = new State(2, alaskaTexture);
-    alaska.dblclick = startNextLevel;
+    alaska = new State(2, alaskaTexture, startNextLevel);
     randomlyPlaceState(alaska);
     
     for(let i = 0; i < levelNum * 5; i++) {
         let randStateNum = Math.floor(Math.random()*states.length);
-        let currState = new State(randStateNum, states[randStateNum]);
+        let currState = new State(randStateNum, states[randStateNum], end);
         randomlyPlaceState(currState);
     }
     
@@ -342,11 +341,15 @@ function newLevel(levelNum) {
 
 function randomlyPlaceState(currState) {
     currStates.push(currState);
-    currState.x = Math.random() * (sceneWidth - 50) + 25;
-    currState.y = Math.random() * (sceneHeight - 400) + 25;
+    currState.x = Math.random() * (sceneWidth - 25) + 25;
+    currState.y = Math.random() * (sceneHeight - 25) + 25;
     gameScene.addChild(currState);
 }
 
-function end(){}
+function end(){
+    endLevel();
+    gameOverScene.visible = false;
+    gameScene.visible = true;
+}
 
 function gameLoop(){}
