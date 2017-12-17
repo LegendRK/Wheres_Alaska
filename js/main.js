@@ -14,7 +14,7 @@ let stage;
 
 // game variables
 let startScene, diffScene, helpScene;
-let gameScene, ship, scoreLabel, lifeLabel, shootSound, hitSound, fireballSound, gameOverScoreLabel;
+let gameScene, ship, scoreLabel, lifeLabel, gameMusic, selectSound, gameOverSound, gameOverScoreLabel;
 let gameOverScene;
 
 let aliens = [];
@@ -79,19 +79,24 @@ function setup()
     // gameScene.addChild(ship);
 
     // #6 - Load Sounds
-    /*
-    shootSound = new Howl({
-        src: ['sounds/shoot.wav']
+    
+    gameMusic = new Howl({
+        src: ['sounds/game_music.wav'],
+        loop:1
+    });
+    
+    
+    selectSound = new Howl({
+        src: ['sounds/select.wav'],
+        volume:0.1
     });
 
-    hitSound = new Howl({
-        src: ['sounds/hit.mp3']
+    
+    gameOverSound = new Howl({
+        src: ['sounds/game_over.wav'],
+        volume:0.5
     });
-
-    fireballSound = new Howl({
-        src: ['sounds/fireball.mp3']
-    });
-    */
+    
     
     // #7 - Load sprite sheet
     states = loadSpriteSheetStates();
@@ -113,10 +118,11 @@ function setup()
 function createLabelsAndButtons()
 {
     let buttonStyle = new PIXI.TextStyle({
-        fill: 0x96c5f7,
+        fill: 0xb9d9fb,
         fontSize: 48,
         fontFamily: "DK Honeyguide",
-        
+        stroke: 0x5987b6,
+        strokeThickness: 4
     });
 
     // 1 - set up 'startScene'
@@ -126,8 +132,8 @@ function createLabelsAndButtons()
         fill: 0xf2f4ff,
         fontSize: 72,
         fontFamily: 'DK Honeyguide',
-        stroke: 0x96c5f7,
-        strokeThickness: 6
+        stroke: 0x5987b6,
+        strokeThickness: 5
     });
     startLabel1.x = 60;
     startLabel1.y = 120;
@@ -136,12 +142,12 @@ function createLabelsAndButtons()
     // 1B - make the start game button
     let startButton = new PIXI.Text("Play");
     startButton.style = buttonStyle;
-    startButton.x = sceneWidth/2 - 60;
+    startButton.x = sceneWidth/2 - 50;
     startButton.y = sceneHeight/2;
     startButton.interactive = true;
     startButton.buttonMode = true;
     startButton.cursor = 'url(images/point.png) 8 8, pointer';
-    startButton.on("pointerup", startGame);
+    startButton.on("pointerup", function(){selectSound.play(); startGame();});
     startButton.on('pointerover', e=>e.target.alpha = 0.7);
     startButton.on('pointerout', e=>e.currentTarget.alpha = 1.0);
     startScene.addChild(startButton);
@@ -149,12 +155,12 @@ function createLabelsAndButtons()
     // 1D - make the difficulty button
     let diffButton = new PIXI.Text("Difficulty");
     diffButton.style = buttonStyle;
-    diffButton.x = sceneWidth/2 - 110;
+    diffButton.x = sceneWidth/2 - 100;
     diffButton.y = sceneHeight/2 + 80;
     diffButton.interactive = true;
     diffButton.buttonMode = true;
     diffButton.cursor = 'url(images/point.png) 8 8, pointer';
-    diffButton.on("pointerup", selectDifficulty);
+    diffButton.on("pointerup", function(){selectSound.play(); selectDifficulty();});
     diffButton.on('pointerover', e=>e.target.alpha = 0.7);
     diffButton.on('pointerout', e=>e.currentTarget.alpha = 1.0);
     startScene.addChild(diffButton);
@@ -162,12 +168,12 @@ function createLabelsAndButtons()
     // 1D - make the help button
     let helpButton = new PIXI.Text("Help");
     helpButton.style = buttonStyle;
-    helpButton.x = sceneWidth/2 - 60;
+    helpButton.x = sceneWidth/2 - 50;
     helpButton.y = sceneHeight/2 + 160;
     helpButton.interactive = true;
     helpButton.buttonMode = true;
     helpButton.cursor = 'url(images/point.png) 8 8, pointer';
-    helpButton.on("pointerup", startGame);
+    helpButton.on("pointerup", function(){selectSound.play(); getHelp();});
     helpButton.on('pointerover', e=>e.target.alpha = 0.7);
     helpButton.on('pointerout', e=>e.currentTarget.alpha = 1.0);
     startScene.addChild(helpButton);
@@ -194,65 +200,169 @@ function createLabelsAndButtons()
     startScene.addChild(startLabel2);
     
     // 1.5 - set up the 'difficulty scene'
-    // 1A - make the top start label
     let topLabel = new PIXI.Text("Where's Alaska?");
+    
     topLabel.style = new PIXI.TextStyle({
         fill: 0xf2f4ff,
         fontSize: 72,
         fontFamily: 'DK Honeyguide',
-        stroke: 0x96c5f7,
-        strokeThickness: 6
+        stroke: 0x5987b6,
+        strokeThickness: 5
     });
     topLabel.x = 60;
     topLabel.y = 120;
     diffScene.addChild(topLabel);
-
     
+    let buttonLabelStyle = new PIXI.TextStyle({
+        fill: 0xf2f4ff,
+        fontSize: 24,
+        fontFamily: 'DK Honeyguide',
+        stroke: 0x76a6d8,
+        strokeThickness: 4
+    });
     
     // 1.5A - set up the Dan Button
     let danButton = new PIXI.Text("Dan");
     danButton.style = buttonStyle;
-    danButton.x = sceneWidth/2 - 60;
+    danButton.x = sceneWidth/2 - 50;
     danButton.y = sceneHeight/2;
     danButton.interactive = true;
     danButton.buttonMode = true;
     danButton.cursor = 'url(images/point.png) 8 8, pointer';
-    danButton.on("pointerup", function() {time = danTime; goBackToMain();});
-    danButton.on('pointerover', e=>e.target.alpha = 0.7);
-    danButton.on('pointerout', e=>e.currentTarget.alpha = 1.0);
+    danButton.on("pointerup", function() {selectSound.play(); time = danTime; goBackToMain();});
+    danButton.on('pointerover', e=>{e.target.alpha = 0.7; danLabel.visible = true;});
+    danButton.on('pointerout', e=>{e.currentTarget.alpha = 1.0; danLabel.visible = false;});
     diffScene.addChild(danButton);
+    
+    let danLabel = new PIXI.Text("Easy mode. Timer is set at 20 seconds");
+    danLabel.style = buttonLabelStyle;
+    danLabel.x = sceneWidth/2 - 180;
+    danLabel.y = sceneHeight/2 - 60;
+    danLabel.visible = false;
+    diffScene.addChild(danLabel);
     
     // 1.5B - set up the Normal Button
     let normalButton = new PIXI.Text("Normal");
     normalButton.style = buttonStyle;
-    normalButton.x = sceneWidth/2 - 90;
+    normalButton.x = sceneWidth/2 - 80;
     normalButton.y = sceneHeight/2 + 80;
     normalButton.interactive = true;
     normalButton.buttonMode = true;
     normalButton.cursor = 'url(images/point.png) 8 8, pointer';
-    normalButton.on("pointerup", function() {time = normalTime; goBackToMain();});
-    normalButton.on('pointerover', e=>e.target.alpha = 0.7);
-    normalButton.on('pointerout', e=>e.currentTarget.alpha = 1.0);
+    normalButton.on("pointerup", function() {selectSound.play(); time = normalTime; goBackToMain();});
+    normalButton.on('pointerover', e=>{e.target.alpha = 0.7; normalLabel.visible = true;});
+    normalButton.on('pointerout', e=>{e.currentTarget.alpha = 1.0; normalLabel.visible = false;});
     diffScene.addChild(normalButton);
+    
+    let normalLabel = new PIXI.Text("Normal mode. Timer is set at 10 seconds");
+    normalLabel.style = buttonLabelStyle;
+    normalLabel.x = sceneWidth/2 - 200;
+    normalLabel.y = sceneHeight/2 - 60;
+    normalLabel.visible = false;
+    diffScene.addChild(normalLabel);
     
     // 1.5C - set up the I LIVE in Alaska Button
     let alaskaButton = new PIXI.Text("I LIVE in Alaska");
     alaskaButton.style = buttonStyle;
-    alaskaButton.x = sceneWidth/2 - 160;
+    alaskaButton.x = sceneWidth/2 - 150;
     alaskaButton.y = sceneHeight/2 + 160;
     alaskaButton.interactive = true;
     alaskaButton.buttonMode = true;
     alaskaButton.cursor = 'url(images/point.png) 8 8, pointer';
-    alaskaButton.on("pointerup", function() {time = alaskaTime; goBackToMain();});
-    alaskaButton.on('pointerover', e=>e.target.alpha = 0.7);
-    alaskaButton.on('pointerout', e=>e.currentTarget.alpha = 1.0);
+    alaskaButton.on("pointerup", function() {selectSound.play(); time = alaskaTime; goBackToMain();});
+    alaskaButton.on('pointerover', e=>{e.target.alpha = 0.7; alaskaLabel.visible = true;});
+    alaskaButton.on('pointerout', e=>{e.currentTarget.alpha = 1.0; alaskaLabel.visible = false;});
     diffScene.addChild(alaskaButton);
     
-    //1.5A - make the difficulty buttons
+    let alaskaLabel = new PIXI.Text("Hard mode. Timer is set at 5 seconds");
+    alaskaLabel.style = buttonLabelStyle;
+    alaskaLabel.x = sceneWidth/2 - 180;
+    alaskaLabel.y = sceneHeight/2 - 60;
+    alaskaLabel.visible = false;
+    diffScene.addChild(alaskaLabel);
     
     // 1.75 - set up the help scene
+    // 1.75A - -set up the labels
+    let helpTextStyle = new PIXI.TextStyle({
+        fill: 0xf2f4ff,
+        fontSize: 32,
+        fontFamily: 'DK Honeyguide',
+        stroke: 0x96c5f7,
+        strokeThickness: 4
+    });
     
+     let helpTextStyleMini = new PIXI.TextStyle({
+        fill: 0xf2f4ff,
+        fontSize: 14,
+        fontFamily: 'DK Honeyguide',
+        stroke: 0x96c5f7,
+        strokeThickness: 2
+    });
     
+    let helpText = [];
+    helpText.push(new PIXI.Text("Where in the world is Alaska? \n"));
+    helpText.push(new PIXI.Text("Who knows? But it's your job to find out! \n"));
+    helpText.push(new PIXI.Text("Click and drag states to move them around. \n"));
+    helpText.push(new PIXI.Text("Double-click on Alaska to advance! \n"));
+    helpText.push(new PIXI.Text("If you're wrong, the timer goes faster! \n"));
+    helpText.push(new PIXI.Text("Are you a professional cartographer?* \n"));
+    helpText.push(new PIXI.Text("Or are you just a Dan? \n"));
+    helpText.push(new PIXI.Text("* Or a regular human being. \n"))
+    for(let text = 0; text < helpText.length; text++)
+    {
+        helpText[text].style = helpTextStyle;
+        helpText[text].y = 120 + 60*text;
+        
+        switch(text)
+        {
+            case 0:
+                helpText[text].x = 80;
+                break;
+            case 1:
+                helpText[text].x = 15;
+                break;
+            case 2:
+                helpText[text].x = 10;
+                break;
+            case 3:
+                helpText[text].x = 50;
+                break;
+            case 4:
+                helpText[text].x = 30;
+                break;
+            case 5:
+                helpText[text].x = 20;
+                break;
+            case 6:
+                helpText[text].x = 120;
+                break;
+            case 7:
+                helpText[text].x = sceneWidth/2 - 100;
+                helpText[text].style = helpTextStyleMini;
+                helpText[text].y = sceneHeight - 20;
+                break;
+            case 8:
+                helpText[text].x = 80;
+                break;
+        }
+        
+            
+        helpScene.addChild(helpText[text]);
+    }
+    
+    // 1.75B - create the back button
+    let backButton = new PIXI.Text("Back");
+    backButton.style = buttonStyle;
+    backButton.x = sceneWidth - 120;
+    backButton.y = sceneHeight - 70;
+    backButton.interactive = true;
+    backButton.buttonMode = true;
+    backButton.cursor = 'url(images/point.png) 8 8, pointer';
+    backButton.on("pointerup", function(){selectSound.play(); goBackToMain();});
+    backButton.on('pointerover', e=>e.target.alpha = 0.7);
+    backButton.on('pointerout', e=>e.currentTarget.alpha = 1.0);
+    helpScene.addChild(backButton);
+
     
     // 2 - set up 'gameScene'
     let textStyle = new PIXI.TextStyle({
@@ -317,6 +427,7 @@ function startGame()
     score = 0;
     life = 100;
     increaseScoreBy(0);
+    gameMusic.play();
     newLevel(levelNum);
 }
 
@@ -327,6 +438,15 @@ function selectDifficulty()
     gameScene.visible = false;
     helpScene.visible = false;
     diffScene.visible = true;
+}
+
+function getHelp()
+{
+    startScene.visible = false;
+    gameOverScene.visible = false;
+    gameScene.visible = false;
+    helpScene.visible = true;
+    diffScene.visible = false;
 }
 
 function goBackToMain()
@@ -416,6 +536,8 @@ function endLevel()
 {
     paused = true;
 
+    
+    
     // clear out level
     currStates.forEach(c=>gameScene.removeChild(c));
     currStates = [];
@@ -450,6 +572,8 @@ function randomlyPlaceState(currState) {
 
 function end(){
     endLevel();
+    gameMusic.stop();
+    
     gameOverScene.visible = true;
     gameScene.visible = false;
 }
@@ -472,7 +596,5 @@ function gameLoop()
     }
     
     // update the score
-    scoreLabel.text = "Score: " + score;
-    
-    
+    scoreLabel.text = "Score: " + score;     
 }

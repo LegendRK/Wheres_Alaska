@@ -10,6 +10,9 @@ class State extends PIXI.Sprite
         this.isMouseTarget = false;
         this.clicks = 0;
         
+        // set the tint
+        this.tint = Math.random() * 0xFFFFFF;
+        
         // set the scale
         this.scale.set = Math.random() * 2;
         this.interactive = true;
