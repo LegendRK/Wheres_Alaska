@@ -17,12 +17,14 @@ class State extends PIXI.Sprite
         this.scale.set = Math.random() * 2;
         this.interactive = true;
         this.dblclick = dblclick;
+        
         this.on("pointerdown", function(e) {
+            
             this.cursor = 'url(images/grab.png) 8 8, pointer';
+            
             let obj = this;
             this.clicks++;
-            if (this.clicks == 1) {
-                
+            if (this.clicks == 1) { 
                 obj.isMouseTarget = true; 
                 setTimeout(function() { 
                     obj.clicks = 0; 
@@ -33,10 +35,12 @@ class State extends PIXI.Sprite
                 }
                 obj.clicks = 0;
             }
+            
         });
         
         
         this.on("pointermove", function(e) {
+            this.cursor = 'url(images/open_hand.png) 8 8, pointer';
             if(this.isMouseTarget) {
                 let mousePosition = app.renderer.plugins.interaction.mouse.global;
                 this.position = mousePosition;
@@ -44,7 +48,7 @@ class State extends PIXI.Sprite
         });
         
         this.on("pointerup", function(e) {
-            this.cursor = 'url(images/open_hand.png) 8 8, pointer';
+            //this.cursor = 'url(images/open_hand.png) 8 8, pointer';
             this.isMouseTarget = false;
         });
         

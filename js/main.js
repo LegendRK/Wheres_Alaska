@@ -191,11 +191,11 @@ function createLabelsAndButtons()
     startLabel2.style = new PIXI.TextStyle({
         fill: 0xFFFFFF,
         fontSize: 21,
-        fontFamily: 'DK Honeyguide',
+        fontFamily: 'PoetsenOne',
         stroke: 0xFF0000,
         strokeThickness: 3
     });
-    startLabel2.x = sceneWidth/2 - 75;
+    startLabel2.x = sceneWidth/2 - 90;
     startLabel2.y = sceneHeight - 30;
     startScene.addChild(startLabel2);
     
@@ -375,7 +375,13 @@ function createLabelsAndButtons()
 
     // 2A - make score label
     scoreLabel = new PIXI.Text();
-    scoreLabel.style = textStyle;
+    scoreLabel.style = new PIXI.TextStyle({
+        fill: 0xFFFFFF,
+        fontSize: 21,
+        fontFamily: 'PoetsenOne',
+        stroke: 0xFF0000,
+        strokeThickness: 3
+    });;
     scoreLabel.x = sceneWidth/2 - 40;
     scoreLabel.y = sceneHeight - 40;
     gameScene.addChild(scoreLabel);

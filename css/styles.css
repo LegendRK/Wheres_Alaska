@@ -3,3 +3,9 @@
     font-family: "DK Honeyguide";
     src: url("fonts/DK Honeyguide Caps.otf");
 }
+
+@font-face
+{
+    font-family: "PoetsenOne";
+    src: url("fonts/PoetsenOne-Regular.ttf");
+}
