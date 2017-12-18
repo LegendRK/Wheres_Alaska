@@ -21,7 +21,7 @@ let startScene, diffScene, helpScene, gameScene, gameOverScene;
 let scoreLabel, lifeLabel, gameOverScoreLabel, gameOverHighScoreLabel;
 
 // music variables
-let gameMusic, selectSound, gameOverSound;
+let gameMusic, selectSound, correctSound, wrongSound, gameOverSound;
 
 // object variables
 let states = [];
@@ -39,6 +39,7 @@ let alaskaTexture;
 let currStates = [];
 let scenes = [];
 let music = [];
+let danSounds = [];
 let highScore = 0;
 let scoreKey = "rgkdsgscore";
 let score = 0;
@@ -99,7 +100,7 @@ function setup()
 
     // #5 - Load Sounds
     gameMusic = new Howl({
-        src: ['sounds/game_music.wav'],
+        src: ['sounds/game_music.mp3'],
         loop:1
     });
     music.push(gameMusic);
@@ -109,6 +110,16 @@ function setup()
         volume:0.1
     });
     music.push(selectSound);
+    
+    correctSound = new Howl({
+       src: ['sounds/correct.mp3'] 
+    });
+    music.push(correctSound);
+    
+    wrongSound = new Howl({
+       src: ['sounds/wrong.wav'] 
+    });
+    music.push(wrongSound);
     
     gameOverSound = new Howl({
         src: ['sounds/game_over.wav'],
@@ -134,7 +145,7 @@ function createLabelsAndButtons()
     let buttonStyle = new PIXI.TextStyle({
         fill: buttonFillColor,
         fontSize: 48,
-        fontFamily: "DK Honeyguide",
+        fontFamily: "FuturaHand",
         stroke: buttonStrokeColor,
         strokeThickness: 4
     });
@@ -150,7 +161,7 @@ function createLabelsAndButtons()
     let helpTextStyle = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 32,
-        fontFamily: 'DK Honeyguide',
+        fontFamily: 'FuturaHand',
         stroke: labelStrokeColor,
         strokeThickness: 4
     });
@@ -158,7 +169,7 @@ function createLabelsAndButtons()
      let helpTextStyleMini = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 18,
-        fontFamily: 'DK Honeyguide',
+        fontFamily: 'FuturaHand',
         stroke: labelStrokeColor,
         strokeThickness: 2
     });
@@ -181,11 +192,11 @@ function createLabelsAndButtons()
     startLabel1.style = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 72,
-        fontFamily: 'DK Honeyguide',
+        fontFamily: 'FuturaHand, arial, sans-serif',
         stroke: labelStrokeColor,
         strokeThickness: 5
     });
-    startLabel1.x = 60;
+    startLabel1.x = sceneWidth/2 - 270;
     startLabel1.y = 120;
     startScene.addChild(startLabel1);
 
@@ -241,7 +252,7 @@ function createLabelsAndButtons()
     startLabel2.style = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 21,
-        fontFamily: 'PoetsenOne',
+        fontFamily: 'PoetsenOne, arial, sans-serif',
         stroke: labelStrokeColor,
         strokeThickness: 3
     });
@@ -254,11 +265,11 @@ function createLabelsAndButtons()
     topLabel.style = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 72,
-        fontFamily: 'DK Honeyguide',
+        fontFamily: 'FuturaHand, arial, sans-serif',
         stroke: labelStrokeColor,
         strokeThickness: 5
     });
-    topLabel.x = 60;
+    topLabel.x = sceneWidth/2 - 270;
     topLabel.y = 120;
     diffScene.addChild(topLabel);
     
@@ -307,7 +318,7 @@ function createLabelsAndButtons()
     // 2E - set up the I LIVE in Alaska Button
     let alaskaButton = new PIXI.Text("I LIVE in Alaska");
     alaskaButton.style = buttonStyle;
-    alaskaButton.x = sceneWidth/2 - 150;
+    alaskaButton.x = sceneWidth/2 - 170;
     alaskaButton.y = sceneHeight/2 + 160;
     alaskaButton.interactive = true;
     alaskaButton.buttonMode = true;
@@ -397,7 +408,7 @@ function createLabelsAndButtons()
     let textStyle = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 18,
-        fontFamily: 'DK Honeyguide',
+        fontFamily: 'FuturaHand',
         stroke: labelStrokeColor,
         strokeThickness: 4
     });
@@ -422,7 +433,7 @@ function createLabelsAndButtons()
     textStyle = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 64,
-        fontFamily: 'DK Honeyguide',
+        fontFamily: 'FuturaHand',
         stroke: labelStrokeColor,
         strokeThickness: 6
     });
@@ -616,6 +627,14 @@ function loadSpriteSheetStates()
 }
 
 function startNextLevel() {
+    if(timer.time == danTime)
+    {
+        
+    }
+    else
+    {
+        correctSound.play();   
+    }
     endLevel();
     levelNum++;
     
@@ -689,6 +708,14 @@ function end(){
 
 function penalize()
 {
+    if(timer.time == danTime)
+    {    
+    }
+    else
+    {
+        wrongSound.play();
+    }
+    
     timer.multiplier += 0.5;
 }
 
