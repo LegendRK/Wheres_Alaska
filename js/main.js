@@ -507,6 +507,7 @@ function createLabelsAndButtons()
 // clicking the button calls startGame()
 function startGame()
 {
+    gameOverScene.removeChild(alaska);
     startScene.visible = false;
     gameOverScene.visible = false;
     gameScene.visible = true;
@@ -624,8 +625,12 @@ function startNextLevel() {
     newLevel(levelNum);
 }
 
-function endLevel()
+function endLevel(keepAlaska = false)
 {
+    if(keepAlaska) {
+        alaska.interactive = false;
+        gameOverScene.addChild(alaska);
+    }
     paused = true;
     
     // clear out level
@@ -672,7 +677,7 @@ function randomlyPlaceState(currState) {
 }
 
 function end(){
-    endLevel();
+    endLevel(true);
     if(musicOn)
     {   
         gameMusic.stop();
