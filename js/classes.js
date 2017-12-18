@@ -27,12 +27,11 @@ class State extends PIXI.Sprite
         
         this.on("pointerdown", function(e) {
             
-            console.log("pressed");
             this.cursor = 'url(images/grab.png) 8 8, pointer';
             
             let obj = this;
             this.clicks++;
-            if (this.clicks == 1) { 
+            if (this.clicks == 1) {
                 obj.isMouseTarget = true; 
                 setTimeout(function() { 
                     obj.clicks = 0; 

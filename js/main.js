@@ -60,7 +60,8 @@ function setup()
     stage = app.stage;
     
     // #0 - Get High Score from local storage
-    highScore = localStorage.getItem(scoreKey);
+    if(localStorage.getItem(scoreKey))
+        highScore = localStorage.getItem(scoreKey);
     
     // #1 - Create the 'start' scene
     startScene = new PIXI.Container();
@@ -620,10 +621,6 @@ function startNextLevel() {
     // add to the score
     score += Math.floor((timer.width/timer.originalWidth) * 100);    
     
-    // update the high score in local storage
-    if(score > highScore)
-        localStorage.setItem(scoreKey, score);
-    
     newLevel(levelNum);
 }
 
@@ -635,7 +632,12 @@ function endLevel()
     currStates.forEach(c=>gameScene.removeChild(c));
     currStates = [];
     
-    gameScene.removeChild(timer)
+    // remove the timer
+    gameScene.removeChild(timer);
+    
+    // update the high score in local storage
+    if(score > highScore)
+        localStorage.setItem(scoreKey, score);
 
 }
 
