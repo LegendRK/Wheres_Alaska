@@ -7,7 +7,7 @@
 /// y: y position on the screen
 class State extends PIXI.Sprite
 {
-    constructor(id, texture, dblclick, x = 0, y = 0)
+    constructor(id, texture, dblclick, release, x = 0, y = 0)
     {
         // load the texture using super
         super(texture);
@@ -23,6 +23,7 @@ class State extends PIXI.Sprite
         // set the scale
         this.interactive = true;
         this.dblclick = dblclick;
+        this.release = release;
         
         
         this.on("pointerdown", function(e) {
@@ -62,7 +63,12 @@ class State extends PIXI.Sprite
         
         this.on("pointerup", function(e) {
             this.cursor = 'url(images/open_hand.png) 8 8, pointer';
-            this.isMouseTarget = false;
+            if(this.isMouseTarget) {
+                this.isMouseTarget = false;
+            }
+            else {
+                this.release();
+            }
         });
         
         // set the x and y
