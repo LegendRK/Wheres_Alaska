@@ -21,7 +21,7 @@ let startScene, diffScene, helpScene, gameScene, gameOverScene;
 let scoreLabel, lifeLabel, gameOverScoreLabel, gameOverHighScoreLabel;
 
 // music variables
-let gameMusic, selectSound, correctSound, wrongSound, gameOverSound;
+let gameMusic, selectSound, correctSound, wrongSound, danRight, danWrong, gameOverSound;
 
 // object variables
 let states = [];
@@ -47,6 +47,7 @@ let life = 100;
 let levelNum = 1;
 let paused = true;
 let musicOn = true;
+let dPressed = false;
 
 // design variables
 let labelFillColor = 0xf2f4ff;
@@ -121,6 +122,16 @@ function setup()
     });
     music.push(wrongSound);
     
+    danRight = new Howl({
+        src: ['sounds/is_alaska.mp3']
+    });
+    music.push(danRight);
+    
+    danWrong = new Howl({
+        src: ['sounds/not_alaska.mp3']
+    });
+    music.push(danWrong);
+    
     gameOverSound = new Howl({
         src: ['sounds/game_over.wav'],
         volume:0.5
@@ -136,6 +147,13 @@ function setup()
     // #8 - Prevent help menu on right click 
     app.view.addEventListener('contextmenu', (e) => {
         e.preventDefault();
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if(e.keyCode == 68)
+        {
+            dPressed = !dPressed;
+        }
     });
 
 }
@@ -612,9 +630,9 @@ function loadSpriteSheetStates()
 }
 
 function startNextLevel() {
-    if(timer.time == danTime)
+    if(timer.time == danTime && dPressed)
     {
-        
+        danRight.play();
     }
     else
     {
@@ -624,7 +642,7 @@ function startNextLevel() {
     levelNum++;
     
     // add to the score
-    s// add to the score
+    // add to the score
     if(timer.time == danTime)
         score += Math.floor((timer.width/timer.originalWidth) * 100);
     else if(timer.time == normalTime)
@@ -702,8 +720,9 @@ function end(){
 
 function penalize()
 {
-    if(timer.time == danTime)
+    if(timer.time == danTime && dPressed)
     {    
+        danWrong.play();
     }
     else
     {
