@@ -659,8 +659,8 @@ function newLevel(levelNum) {
 
 function randomlyPlaceState(currState) {
     currStates.push(currState);
-    currState.x = Math.random() * (sceneWidth - 25) + 25;
-    currState.y = Math.random() * (sceneHeight - 25) + 25;
+    currState.x = Math.random() * (sceneWidth - 100) + 50;
+    currState.y = Math.random() * (sceneHeight - 100) + 50;
     gameScene.addChild(currState);
 }
 
