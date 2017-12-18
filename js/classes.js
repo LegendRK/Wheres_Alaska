@@ -2,7 +2,8 @@
 /// paramaters: id, texture, dblclick, x, y
 /// id: value of state in the array, used to identify the state
 /// texture: the sprite for the state
-/// dblclick: double click event
+/// dblclick: double click event function
+/// release: releases all states from following mouse
 /// x: x position on the screen
 /// y: y position on the screen
 class State extends PIXI.Sprite
@@ -14,7 +15,11 @@ class State extends PIXI.Sprite
         
         // set the anchor
         this.anchor.set(0.5, 0.5);
+        
+        // Default to not following mouse
         this.isMouseTarget = false;
+        
+        // Default to 0 to use later for checking double click
         this.clicks = 0;
         
         // set the tint
@@ -22,16 +27,31 @@ class State extends PIXI.Sprite
         
         // set the scale
         this.interactive = true;
+        
+        // Function to perform on double click
         this.dblclick = dblclick;
         this.release = release;
         
+        // Remove state if right clicked - if state is alaska quit
+        this.on("rightup", function(e) {
+            if(!this.isAlaska()) {
+                gameScene.removeChild(this);
+                currStates.pop(this);
+            } else {
+                end();
+            }
+        });
         
+        // Check click/double click to start mouse following
         this.on("pointerdown", function(e) {
             
+            // Change cursor
             this.cursor = 'url(images/grab.png) 8 8, pointer';
             
+            // Save scope for double click detect
             let obj = this;
             this.clicks++;
+            
             if (this.clicks == 1) {
                 obj.isMouseTarget = true; 
                 setTimeout(function() { 
@@ -46,7 +66,8 @@ class State extends PIXI.Sprite
             
         });
         
-        
+        // Follow mouse if we should, otherwise just change to open hand to imply
+        // that we can grab the state
         this.on("pointermove", function(e) {
             //this.cursor = 'url(images/open_hand.png) 8 8, pointer';
             if(this.isMouseTarget) {
@@ -61,6 +82,7 @@ class State extends PIXI.Sprite
             }
         });
         
+        // Let go of state, or in edge case free all states
         this.on("pointerup", function(e) {
             this.cursor = 'url(images/open_hand.png) 8 8, pointer';
             if(this.isMouseTarget) {
@@ -77,6 +99,10 @@ class State extends PIXI.Sprite
         
         // set the id so we can check for the state later
         this.id = id;
+    }
+    
+    isAlaska() {
+        return (this.id == 2);
     }
 }
 

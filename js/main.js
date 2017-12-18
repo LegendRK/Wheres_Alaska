@@ -133,7 +133,10 @@ function setup()
     // #7 - Start update loop
     app.ticker.add(gameLoop);
 
-    // #8 - Start listening for click events on the canvas
+    // #8 - Prevent help menu on right click 
+    app.view.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+    });
 
 }
 
@@ -570,30 +573,6 @@ function increaseScoreBy(value)
 {
     score += value;
     scoreLabel.text = 'Score    ' + score;
-}
-
-function decreaseLifeBy(value)
-{
-    life -= value;
-    life = parseInt(life);
-    lifeLabel.text = 'Life      ' + life + '%';
-}
-
-function loadSpriteSheet()
-{
-    // 16 animation frames are 64x64
-    // second row
-    let spriteSheet = PIXI.BaseTexture.fromImage("images/explosions.png");
-    let width = 64;
-    let height = 64;
-    let numFrames = 16;
-    let textures = [];
-    for(let i = 0; i < numFrames; i++)
-    {
-        let frame = new PIXI.Texture(spriteSheet, new PIXI.Rectangle(i*width, 64, width, height));
-        textures.push(frame);
-    }
-    return textures;
 }
 
 /// Init states array to state textures
