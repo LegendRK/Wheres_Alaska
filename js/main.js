@@ -156,14 +156,14 @@ function createLabelsAndButtons()
     let buttonLabelStyle = new PIXI.TextStyle({
         fill: buttonFillColor,
         fontSize: 24,
-        fontFamily: 'PoetsenOne',
+        fontFamily: 'FuturaHand',
         stroke: buttonStrokeColor,
         strokeThickness: 4
     });
 
     let helpTextStyle = new PIXI.TextStyle({
         fill: labelFillColor,
-        fontSize: 32,
+        fontSize: 28,
         fontFamily: 'FuturaHand',
         stroke: labelStrokeColor,
         strokeThickness: 4
@@ -180,7 +180,7 @@ function createLabelsAndButtons()
     let scoreStyle = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 32,
-        fontFamily: 'PoetsenOne',
+        fontFamily: 'FuturaHand',
         stroke: labelStrokeColor,
         strokeThickness: 6
     })
@@ -255,7 +255,7 @@ function createLabelsAndButtons()
     startLabel2.style = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 21,
-        fontFamily: 'PoetsenOne, arial, sans-serif',
+        fontFamily: 'FuturaHand arial, sans-serif',
         stroke: labelStrokeColor,
         strokeThickness: 3
     });
@@ -348,45 +348,51 @@ function createLabelsAndButtons()
     helpText.push(new PIXI.Text("Click and drag states to move them around. \n"));
     helpText.push(new PIXI.Text("Double-click on Alaska to advance! \n"));
     helpText.push(new PIXI.Text("If you're wrong, the timer goes faster! \n"));
+    helpText.push(new PIXI.Text("Right click on states to remove them! \n"));
+    helpText.push(new PIXI.Text("If you right click on Alaska, GAME OVER! \n"));
     helpText.push(new PIXI.Text("Are you a professional cartographer?* \n"));
     helpText.push(new PIXI.Text("Or are you just a Dan? \n"));
     helpText.push(new PIXI.Text("* Or a regular human being. \n"))
     for(let text = 0; text < helpText.length; text++)
     {
         helpText[text].style = helpTextStyle;
-        helpText[text].y = 120 + 60*text;
+        helpText[text].y = 30 + 60*text;
         
         switch(text)
         {
             case 0:
-                helpText[text].x = 80;
+                helpText[text].x = 85;
                 break;
             case 1:
                 helpText[text].x = 15;
                 break;
             case 2:
-                helpText[text].x = 10;
+                helpText[text].x = 15;
                 break;
             case 3:
-                helpText[text].x = 50;
+                helpText[text].x = 55;
                 break;
             case 4:
-                helpText[text].x = 30;
+                helpText[text].x = 35;
                 break;
             case 5:
-                helpText[text].x = 20;
+                helpText[text].x = 50;
                 break;
             case 6:
-                helpText[text].x = 120;
+                helpText[text].x = 15;
                 break;
             case 7:
+                helpText[text].x = 25;
+                break;
+            case 8:
+                helpText[text].x = 125;
+                break;
+            case 9:
                 helpText[text].x = sceneWidth/2 - 120;
                 helpText[text].style = helpTextStyleMini;
                 helpText[text].y = sceneHeight - 20;
                 break;
-            case 8:
-                helpText[text].x = 80;
-                break;
+            
         }
         
             
@@ -421,7 +427,7 @@ function createLabelsAndButtons()
     scoreLabel.style = new PIXI.TextStyle({
         fill:labelFillColor,
         fontSize: 21,
-        fontFamily: 'PoetsenOne',
+        fontFamily: 'FuturaHand',
         stroke: labelStrokeColor,
         strokeThickness: 3
     });;
@@ -618,7 +624,13 @@ function startNextLevel() {
     levelNum++;
     
     // add to the score
-    score += Math.floor((timer.width/timer.originalWidth) * 100);    
+    s// add to the score
+    if(timer.time == danTime)
+        score += Math.floor((timer.width/timer.originalWidth) * 100);
+    else if(timer.time == normalTime)
+        score += Math.floor((timer.width/timer.originalWidth) * 200);
+    else if(timer.time == alaskaTime)
+        score += Math.floor((timer.width/timer.originalWidth) * 300);
     
     newLevel(levelNum);
 }
@@ -640,7 +652,10 @@ function endLevel(keepAlaska = false)
     
     // update the high score in local storage
     if(score > highScore)
+    {
+        highScore = score;
         localStorage.setItem(scoreKey, score);
+    }
 
 }
 
