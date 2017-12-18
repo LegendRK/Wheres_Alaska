@@ -1,3 +1,10 @@
+/// State class
+/// paramaters: id, texture, dblclick, x, y
+/// id: value of state in the array, used to identify the state
+/// texture: the sprite for the state
+/// dblclick: double click event
+/// x: x position on the screen
+/// y: y position on the screen
 class State extends PIXI.Sprite
 {
     constructor(id, texture, dblclick, x = 0, y = 0)
@@ -14,12 +21,13 @@ class State extends PIXI.Sprite
         this.tint = Math.random() * 0xFFFFFF;
         
         // set the scale
-        this.scale.set = Math.random() * 2;
         this.interactive = true;
         this.dblclick = dblclick;
         
+        
         this.on("pointerdown", function(e) {
             
+            console.log("pressed");
             this.cursor = 'url(images/grab.png) 8 8, pointer';
             
             let obj = this;
@@ -40,15 +48,21 @@ class State extends PIXI.Sprite
         
         
         this.on("pointermove", function(e) {
-            this.cursor = 'url(images/open_hand.png) 8 8, pointer';
+            //this.cursor = 'url(images/open_hand.png) 8 8, pointer';
             if(this.isMouseTarget) {
+
                 let mousePosition = app.renderer.plugins.interaction.mouse.global;
                 this.position = mousePosition;
+
+            }
+            else
+            {
+                this.cursor = 'url(images/open_hand.png) 8 8, pointer';
             }
         });
         
         this.on("pointerup", function(e) {
-            //this.cursor = 'url(images/open_hand.png) 8 8, pointer';
+            this.cursor = 'url(images/open_hand.png) 8 8, pointer';
             this.isMouseTarget = false;
         });
         
@@ -61,9 +75,17 @@ class State extends PIXI.Sprite
     }
 }
 
+/// Timer class
+/// paramaters: width, time, height, color, x, y
+/// width: width of the timer accross the screen
+/// time: amount of time used by the timer
+/// height: height of the timer on the screen
+/// color: color of the timer bar
+/// x: x position on the screen
+/// y: y position on the screen
 class Timer extends PIXI.Graphics
 {
-    constructor(width, time = 10, height = 10, color = 0x000000, x = 0, y = 0)
+    constructor(width, time = 10, height = 10, color = 0xb9d9fb, x = 0, y = 0)
     {
         super();
         this.beginFill(color);
