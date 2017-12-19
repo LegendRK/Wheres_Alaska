@@ -134,7 +134,7 @@ class Timer extends PIXI.Graphics
     
     countdown(dt = 1/60)
     {
-        this.currentTime -= (((this.originalWidth / this.time) * (dt / 100)) * this.multiplier);
+        this.currentTime -= (((this.originalWidth / this.time) * (dt / 60)) * this.multiplier);
         this.update();
     }
     

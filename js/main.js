@@ -1,6 +1,6 @@
 "use strict";
 const app = new PIXI.Application(600,600,{backgroundColor: 0xf2f4ff});
-document.querySelector("div.gameContainer").appendChild(app.view);
+document.body.appendChild(app.view);
 
 // constants
 const sceneWidth = app.view.width;
@@ -32,7 +32,7 @@ let timer;
 let time = 10;
 let danTime = 20;
 let normalTime = 10;
-let alaskaTime = 5;
+let alaskaTime = 7;
 
 // other variables
 let alaskaTexture;
@@ -630,13 +630,16 @@ function loadSpriteSheetStates()
 }
 
 function startNextLevel() {
-    if(timer.time == danTime && dPressed)
+    if(musicOn)
     {
-        danRight.play();
-    }
-    else
-    {
-        correctSound.play();   
+        if(timer.time == danTime && dPressed)
+        {
+            danRight.play();
+        }
+        else
+        {
+            correctSound.play();   
+        }
     }
     endLevel();
     levelNum++;
@@ -722,13 +725,16 @@ function end(){
 
 function penalize()
 {
-    if(timer.time == danTime && dPressed)
-    {    
-        danWrong.play();
-    }
-    else
+    if(musicOn)
     {
-        wrongSound.play();
+        if(timer.time == danTime && dPressed)
+        {    
+            danWrong.play();
+        }
+        else
+        {
+            wrongSound.play();
+        }
     }
     
     timer.multiplier += 0.5;
