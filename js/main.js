@@ -670,7 +670,6 @@ function endLevel(keepAlaska = false)
     // remove the timer
     gameScene.removeChild(timer);
     gameScene.removeChild(alaska);
-    alaska = undefined;
     
     // update the high score in local storage
     if(score > highScore)
