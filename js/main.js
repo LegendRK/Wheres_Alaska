@@ -545,6 +545,7 @@ function createLabelsAndButtons()
 // clicking the button calls startGame()
 function startGame()
 {
+    currStates = [];
     gameOverScene.removeChild(alaska);
     startScene.visible = false;
     gameOverScene.visible = false;
@@ -659,6 +660,7 @@ function endLevel(keepAlaska = false)
         alaska.interactive = false;
         gameOverScene.addChild(alaska);
     }
+    
     paused = true;
     
     // clear out level
@@ -667,6 +669,8 @@ function endLevel(keepAlaska = false)
     
     // remove the timer
     gameScene.removeChild(timer);
+    gameScene.removeChild(alaska);
+    alaska = undefined;
     
     // update the high score in local storage
     if(score > highScore)
