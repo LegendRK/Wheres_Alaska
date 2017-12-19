@@ -1,6 +1,6 @@
 "use strict";
 const app = new PIXI.Application(600,600,{backgroundColor: 0xf2f4ff});
-document.body.appendChild(app.view);
+document.querySelector("div.gameContainer").appendChild(app.view);
 
 // constants
 const sceneWidth = app.view.width;
@@ -18,7 +18,7 @@ let stage;
 let startScene, diffScene, helpScene, gameScene, gameOverScene;
 
 // label variables
-let scoreLabel, lifeLabel, gameOverScoreLabel, gameOverHighScoreLabel;
+let scoreLabel, highScoreLabel, lifeLabel, gameOverScoreLabel, gameOverHighScoreLabel;
 
 // music variables
 let gameMusic, selectSound, correctSound, wrongSound, danRight, danWrong, gameOverSound;
@@ -261,25 +261,24 @@ function createLabelsAndButtons()
     startScene.addChild(helpButton);
     
     // 1E - make the high score
-    let startLabel2;
-    if(highScore == null)
+    if(highScoreLabel == null)
     {
-        startLabel2 = new PIXI.Text("High Score: " + 0);
+        highScoreLabel = new PIXI.Text("High Score: " + 0);
     }
     else
     {
-        startLabel2 = new PIXI.Text("High Score: " + highScore);
+        highScoreLabel = new PIXI.Text("High Score: " + highScore);
     }
-    startLabel2.style = new PIXI.TextStyle({
+    highScoreLabel.style = new PIXI.TextStyle({
         fill: labelFillColor,
         fontSize: 21,
-        fontFamily: 'FuturaHand arial, sans-serif',
+        fontFamily: 'FuturaHand, arial, sans-serif',
         stroke: labelStrokeColor,
         strokeThickness: 3
     });
-    startLabel2.x = sceneWidth/2 - 90;
-    startLabel2.y = sceneHeight - 40;
-    startScene.addChild(startLabel2);
+    highScoreLabel.x = sceneWidth/2 - 90;
+    highScoreLabel.y = sceneHeight - 40;
+    startScene.addChild(highScoreLabel);
     
     // 2 - set up the 'difficulty scene'
     let topLabel = new PIXI.Text("Where's Alaska?");
@@ -737,6 +736,13 @@ function penalize()
 
 function gameLoop()
 {
+    // START SCENE CODE
+    // update the high score label
+    if(startScene.visible == true)
+    {
+        highScoreLabel.text = "High Score : " + highScore;
+    }
+    
     // GAME SCENE CODE
     // keep track of the timer
     if(timer && gameScene.visible == true)
