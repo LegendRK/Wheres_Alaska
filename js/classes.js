@@ -33,10 +33,9 @@ class State extends PIXI.Sprite
         this.release = release;
         
         // Remove state if right clicked - if state is alaska quit
-        this.on("rightup", function(e) {
+        this.on("rightclick", function(e) {
             if(!this.isAlaska()) {
                 gameScene.removeChild(this);
-                currStates.pop(this);
             } else {
                 end();
             }
