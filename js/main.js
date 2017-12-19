@@ -681,7 +681,7 @@ function endLevel(keepAlaska = false)
 }
 
 function newLevel(levelNum) {
-    alaska = new State(1-, alaskaTexture, startNextLevel, releaseStates);
+    alaska = new State(-1, alaskaTexture, startNextLevel, releaseStates);
     randomlyPlaceState(alaska);
     
     for(let i = 0; i < levelNum * 5; i++) {
