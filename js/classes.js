@@ -123,7 +123,6 @@ class Timer extends PIXI.Graphics
         this.endFill();
         this.x = x;
         this.y = y;
-        this.time = time;
         this.width = width;
         this.originalWidth = width;
         this.totalTime = time;
@@ -132,9 +131,10 @@ class Timer extends PIXI.Graphics
         this.multiplier = 1;
     }
     
-    countdown(dt = 1/60)
+    countdown()
     {
-        this.currentTime -= (((this.originalWidth / this.time) * (dt / 60)) * this.multiplier);
+        let timeToSubtract = ((((this.originalWidth / this.totalTime) * (app.ticker.elapsedMS / 1000)) / app.ticker.FPS) * (this.totalTime / 10));
+        this.currentTime = this.currentTime - timeToSubtract;
         this.update();
     }
     

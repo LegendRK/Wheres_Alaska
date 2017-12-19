@@ -29,10 +29,10 @@ let alaska;
 let timer;
 
 // pre-set values
-let time = 10;
-let danTime = 20;
-let normalTime = 10;
-let alaskaTime = 7;
+let danTime = 30;
+let normalTime = 20;
+let alaskaTime = 10;
+let time = normalTime;
 
 // other variables
 let alaskaTexture;
@@ -143,7 +143,7 @@ function setup()
 
     // #7 - Start update loop
     app.ticker.add(gameLoop);
-
+    
     // #8 - Prevent help menu on right click 
     app.view.addEventListener('contextmenu', (e) => {
         e.preventDefault();
@@ -307,7 +307,7 @@ function createLabelsAndButtons()
     diffScene.addChild(danButton);
     
     // 2B - set up the Dan Button Label
-    let danLabel = new PIXI.Text("Easy mode. Timer is set at 20 seconds");
+    let danLabel = new PIXI.Text("Easy mode. Timer is set at 30 seconds");
     danLabel.style = buttonLabelStyle;
     danLabel.x = sceneWidth/2 - 210;
     danLabel.y = sceneHeight/2 - 60;
@@ -328,7 +328,7 @@ function createLabelsAndButtons()
     diffScene.addChild(normalButton);
     
     // 2D - set up the Normal Button label
-    let normalLabel = new PIXI.Text("Normal mode. Timer is set at 10 seconds");
+    let normalLabel = new PIXI.Text("Normal mode. Timer is set at 20 seconds");
     normalLabel.style = buttonLabelStyle;
     normalLabel.x = sceneWidth/2 - 230;
     normalLabel.y = sceneHeight/2 - 60;
@@ -349,7 +349,7 @@ function createLabelsAndButtons()
     diffScene.addChild(alaskaButton);
     
     // 2F - set up the I LIVE in Alaska button label
-    let alaskaLabel = new PIXI.Text("Hard mode. Timer is set at 5 seconds");
+    let alaskaLabel = new PIXI.Text("Hard mode. Timer is set at 10 seconds");
     alaskaLabel.style = buttonLabelStyle;
     alaskaLabel.x = sceneWidth/2 - 210;
     alaskaLabel.y = sceneHeight/2 - 60;
@@ -742,6 +742,7 @@ function penalize()
 
 function gameLoop()
 {
+    
     // START SCENE CODE
     // update the high score label
     if(startScene.visible == true)
@@ -755,7 +756,7 @@ function gameLoop()
     {
         if(timer.width > 0)
             timer.countdown();
-        
+            
         if(timer.width <= 0 && gameOverScene.visible == false)
             end();
     }
