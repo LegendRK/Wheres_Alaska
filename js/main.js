@@ -632,7 +632,7 @@ function loadSpriteSheetStates()
 function startNextLevel() {
     if(musicOn)
     {
-        if(timer.time == danTime && dPressed)
+        if(timer.totalTime == danTime && dPressed)
         {
             danRight.play();
         }
@@ -641,16 +641,16 @@ function startNextLevel() {
             correctSound.play();   
         }
     }
+    
     endLevel();
     levelNum++;
     
     // add to the score
-    // add to the score
-    if(timer.time == danTime)
+    if(timer.totalTime == danTime)
         score += Math.floor((timer.width/timer.originalWidth) * 100);
-    else if(timer.time == normalTime)
+    else if(timer.totalTime == normalTime)
         score += Math.floor((timer.width/timer.originalWidth) * 200);
-    else if(timer.time == alaskaTime)
+    else if(timer.totalTime == alaskaTime)
         score += Math.floor((timer.width/timer.originalWidth) * 300);
     
     newLevel(levelNum);
@@ -727,7 +727,7 @@ function penalize()
 {
     if(musicOn)
     {
-        if(timer.time == danTime && dPressed)
+        if(timer.totalTime == danTime && dPressed)
         {    
             danWrong.play();
         }
